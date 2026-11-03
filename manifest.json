@@ -1,0 +1,14 @@
+{
+  "manifest_version": 3,
+  "name": "arXiv 论文自动命名",
+  "version": "1.0.0",
+  "description": "从 arXiv 下载 PDF 时自动重命名为「论文标题 [arXiv号].pdf」",
+  "permissions": ["downloads"],
+  "host_permissions": ["https://arxiv.org/*", "https://*.arxiv.org/*"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "下载当前 arXiv 论文（自动命名）"
+  }
+}
