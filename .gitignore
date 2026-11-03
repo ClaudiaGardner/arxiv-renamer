@@ -1,0 +1,13 @@
+# OS junk
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+
+# Build artifacts (e.g. if you zip the extension for the Chrome Web Store)
+*.zip
+dist/

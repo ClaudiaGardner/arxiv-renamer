@@ -1,38 +1,48 @@
 # arXiv Renamer
 
-一个 Chrome / Edge 浏览器插件：从 arXiv 下载论文 PDF 时，自动把文件名改成「论文标题 [arXiv号].pdf」。
-
 A Chrome / Edge extension that renames arXiv PDF downloads to `Paper Title [arXiv ID].pdf`.
 
-| 下载链接 | 保存的文件名 |
+**English** · [中文说明](README.zh-CN.md)
+
+| Download URL | Saved as |
 |---|---|
 | `arxiv.org/pdf/1706.03762` | `Attention Is All You Need [1706.03762].pdf` |
 | `arxiv.org/pdf/1706.03762v5` | `Attention Is All You Need [1706.03762v5].pdf` |
 | `arxiv.org/pdf/hep-th/9901001` | `String Junctions and Their Duals in Heterotic String Theory [hep-th_9901001].pdf` |
 
-## 安装
+## Install
 
-1. 下载本仓库（`Code` → `Download ZIP` 后解压，或 `git clone`）
-2. 打开 `chrome://extensions`（Edge 为 `edge://extensions`）
-3. 打开右上角「开发者模式」
-4. 点「加载已解压的扩展程序」，选择本仓库文件夹
+1. Download this repo (`Code` → `Download ZIP` and unzip, or `git clone`)
+2. Open `chrome://extensions` (or `edge://extensions`)
+3. Turn on **Developer mode** (top right)
+4. Click **Load unpacked** and select this folder
 
-## 使用
+## Usage
 
-- **自动改名**：直接点 PDF 链接下载，或在浏览器 PDF 阅读器里点下载按钮，都会自动改名。非 arXiv 的下载不受影响。
-- **工具栏按钮**：在论文摘要页（`/abs/`）或 PDF 页点击插件图标，直接下载这篇论文的 PDF。当前页面不是 arXiv 论文时，图标上会闪一个 ×。
+- **Auto-rename**: download a PDF link directly, or use the download button in the browser's PDF viewer — the file is renamed automatically. Downloads that are not from arXiv are untouched.
+- **Toolbar button**: on an abstract page (`/abs/`) or PDF page, click the extension icon to download that paper. On a non-arXiv page the icon flashes a `×`.
 
-## 说明
+## How it works
 
-- 标题优先通过 [arXiv API](https://info.arxiv.org/help/api/) 获取，失败时从论文摘要页的 `citation_title` 读取；都失败则只用 arXiv 号命名。
-- 文件名中的非法字符（`\ / : * ? " < > |`）会替换为空格，标题超过 180 个字符会截断。
-- 修改文件名格式：编辑 `background.js` 中的 `formatName`，然后在扩展页面点刷新。例如：
+- The title is fetched from the [arXiv API](https://info.arxiv.org/help/api/) first, falling back to the `citation_title` meta tag on the abstract page. If both fail, the file is named by arXiv ID only.
+- Characters that are illegal in file names (`\ / : * ? " < > |`) are replaced with spaces, and titles are truncated to 180 characters.
+- `/` in old-style IDs (`hep-th/9901001`) becomes `_` so the file stays flat in the download folder.
+- To change the file name format, edit `formatName` in `background.js`, then hit refresh on the extension page:
 
   ```js
   const formatName = (title, id) => `${title}_${id}.pdf`;
   ```
 
-- Firefox 不支持 `chrome.downloads.onDeterminingFilename`，因此暂不支持 Firefox。
+- Firefox does not support `chrome.downloads.onDeterminingFilename`, so Firefox is not supported yet.
+
+## Permissions
+
+| Permission | Why |
+|---|---|
+| `downloads` | Rename the download and trigger downloads from the toolbar button |
+| `https://arxiv.org/*`, `https://*.arxiv.org/*` | Fetch titles from the arXiv API and abstract pages |
+
+No data is collected or sent anywhere except to arXiv itself.
 
 ## License
 
